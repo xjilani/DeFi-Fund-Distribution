@@ -10,20 +10,33 @@ contract DeFiFundDistribution {
         require(msg.sender==owner,"Your are not authorize person");
         _;
     }
-    function distributeFund(address[]  memory  members_,uint256[] memory amounts_) public payable onlyOwner returns (bool[] memory) {
+    function depositIntoContract() public payable {}
+    
+    function withdraw(address  to_) public{
+        uint256 amount = address(this).balance;
+        (bool success,) = to_.call{value: amount}("");
+        require(success, "Failed to send ETH");
+    }
+    function eth()public view returns (uint256){
+        return(address(this).balance);
+    }
+    function distributeFund(address[]  memory  members_,uint256[] memory amounts_) public payable onlyOwner returns(bool[] memory)  {
         uint dLen=members_.length;
         require(dLen==amounts_.length,"Sorry Miss matche distributions");
         require(msg.value>0,"Kindly Pay ETH");
         uint256 total=0;
         uint i=0;
-        for(i=0;i<dLen;i++){ total+=amounts_[i];}
+        for(i=0;i<dLen;i++){ total=total+amounts_[i];}
+        require(total==msg.value,"Invalid amount distribution");
         // Call returns a boolean value indicating success or failure.
         // This is the current recommended method to use.
+        //The gas cost will be deducted from the external account that initiated the transaction.
         // (bool sent, bytes memory data) = address[i].call{value: msg.value}("");
-        bool[] memory r_;
+        bool status=false;
         for(i=0;i<dLen;i++){
-            (r_[i],) = members_[i].call{value: amounts_[i]}("");
+            (status,) = members_[i].call{value: amounts_[i]}("");
+            require(status==true,"Distribution faild");
         }
-        return(r_);
+        
     } 
 }
