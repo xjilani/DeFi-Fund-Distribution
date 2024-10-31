@@ -7,7 +7,7 @@ contract DeFiFundDistribution {
         owner=owner_;
     }
     modifier  onlyOwner {
-        require(msg.sender==owner,"Your are not authorize person");
+        require(msg.sender==owner,"Your are not authorized person");
         _;
     }
     function depositIntoContract() public payable {}
@@ -20,7 +20,7 @@ contract DeFiFundDistribution {
     function eth()public view returns (uint256){
         return(address(this).balance);
     }
-    function distributeFund(address[]  memory  members_,uint256[] memory amounts_) public payable onlyOwner returns(bool[] memory)  {
+    function distributeFund(address[]  memory  members_,uint256[] memory amounts_) public payable onlyOwner  {
         uint dLen=members_.length;
         require(dLen==amounts_.length,"Sorry Miss matche distributions");
         require(msg.value>0,"Kindly Pay ETH");
