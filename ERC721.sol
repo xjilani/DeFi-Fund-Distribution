@@ -7,13 +7,17 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract MyToken is ERC721,ERC721URIStorage, Ownable {
     mapping(uint256=>bytes) tokenData;
     constructor() ERC721("VritaVentures", "VritaNFT")  Ownable(msg.sender) {}
-    function mintNFT(address to_, uint256 tokenId_,string memory uri_,bytes memory data_) public payable   {
+    function mint0(address to_, uint256 tokenId_,string memory uri_,bytes memory data_) public payable onlyOwner   {
         _safeMint(to_, tokenId_,data_);
         _setTokenURI(tokenId_,uri_);
         tokenData[tokenId_]=data_;
     }
-    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory)
-    {
+    function mintNFT(uint256 tokenId_,string memory uri_,bytes memory data_) public payable    {
+        _safeMint(msg.sender, tokenId_,data_);
+        _setTokenURI(tokenId_,uri_);
+        tokenData[tokenId_]=data_;
+    }
+    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory){
         return super.tokenURI(tokenId);
     }
     function getData(uint256 tokenId_) public view returns(bytes memory){
@@ -30,6 +34,4 @@ contract MyToken is ERC721,ERC721URIStorage, Ownable {
     {
         return super.supportsInterface(interfaceId);
     }
-
-
 }
