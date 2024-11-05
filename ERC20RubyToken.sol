@@ -1,6 +1,7 @@
 // RubyToke ERC20 with 6 decimals
 // update 18 return value to 6 in ERC20.sol
 // SPDX-License-Identifier: MIT
+// Predefined Methods:https://solang.readthedocs.io/en/latest/language/builtins.html
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
